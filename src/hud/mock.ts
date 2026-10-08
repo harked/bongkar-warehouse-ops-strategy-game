@@ -52,16 +52,16 @@ const STAGE_LABEL: Record<ShipmentStage['key'], string> = {
   unloading: 'Unloading',
   putaway: 'Putaway',
 };
-const CAPACITY: Record<string, number> = { northgate: 1840, frostline: 960, riverside: 0, pinecrest: 640 };
+const CAPACITY: Record<string, number> = { 'pasa-ateh': 1840, ambacang: 960, 'teluk-bayur': 0, 'stasiun-tabing': 640 };
 const ROUTES: [string, string][] = [
-  ['northgate', 'frostline'],
-  ['frostline', 'pinecrest'],
-  ['riverside', 'northgate'],
-  ['northgate', 'pinecrest'],
-  ['pinecrest', 'riverside'],
-  ['frostline', 'riverside'],
-  ['riverside', 'pinecrest'],
-  ['northgate', 'riverside'],
+  ['pasa-ateh', 'ambacang'],
+  ['ambacang', 'stasiun-tabing'],
+  ['teluk-bayur', 'pasa-ateh'],
+  ['pasa-ateh', 'stasiun-tabing'],
+  ['stasiun-tabing', 'teluk-bayur'],
+  ['ambacang', 'teluk-bayur'],
+  ['teluk-bayur', 'stasiun-tabing'],
+  ['pasa-ateh', 'teluk-bayur'],
 ];
 
 interface DockDef {
@@ -146,7 +146,7 @@ export function createMock(): MockSource {
   let eventId = 1;
   const prev = new Map<string, string>();
   let seeded = false;
-  const throughputBase: Record<string, number> = { northgate: 412, frostline: 186, riverside: 538, pinecrest: 244 };
+  const throughputBase: Record<string, number> = { 'pasa-ateh': 412, ambacang: 186, 'teluk-bayur': 538, 'stasiun-tabing': 244 };
 
   function push(t: number, text: string, tone: Tone, siteId?: string, ref?: EntityRef): void {
     events.unshift({ id: eventId++, t, text, tone, siteId, ref });
@@ -350,9 +350,9 @@ export function createMock(): MockSource {
           doorLabel: ts === 'at-dock' ? `D0${1 + (h.idx % 4)}` : undefined,
           where:
             ts === 'en-route'
-              ? `${duration(hs.transitLeft)} to ${h.to.name.split(' ')[0]}`
+              ? `${duration(hs.transitLeft)} to ${h.to.short}`
               : ts === 'queued'
-                ? `In the yard at ${h.to.name.split(' ')[0]}`
+                ? `In the yard at ${h.to.short}`
                 : ts === 'leaving'
                   ? 'Heading off the map'
                   : `Docked at D0${1 + (h.idx % 4)}`,
@@ -365,7 +365,7 @@ export function createMock(): MockSource {
       const sig = `${hs.cycle}:${hs.stage}`;
       if (seeded && prev.get(key) !== sig) {
         const ref: EntityRef = { kind: 'truck', id: hs.truckId };
-        if (hs.stage === 2) push(t, `${hs.id} left ${h.from.name} for ${h.to.name.split(' ')[0]}`, 'active', h.from.id, ref);
+        if (hs.stage === 2) push(t, `${hs.id} left ${h.from.name} for ${h.to.short}`, 'active', h.from.id, ref);
         else if (hs.stage === 3)
           push(t, `${hs.id} arrived at ${h.to.name}${hs.status === 'late' ? ', late' : ''}`, hs.status === 'late' ? 'alert' : 'good', h.to.id, ref);
         else if (hs.stage === 0) push(t, `${hs.id} picking started at ${h.from.name}`, 'neutral', h.from.id);
@@ -391,10 +391,10 @@ export function createMock(): MockSource {
       seeded = true;
       const s = t - 600;
       push(s, 'Early shift started at all four sites', 'neutral');
-      push(s + 80, 'Frostline freezer holding at -18.6 °C', 'cold', 'frostline', { kind: 'site', id: 'frostline' });
-      push(s + 180, 'Riverside D04 cleared 22 pallets in 9 min', 'good', 'riverside', { kind: 'dock', id: 'riverside:D04' });
-      push(s + 320, `${shipments[1].id} at risk, picking behind plan`, 'warn', 'frostline');
-      push(s + 470, 'Northgate FL-03 finished charging', 'good', 'northgate', { kind: 'forklift', id: 'northgate:FL-03' });
+      push(s + 80, 'Ambacang freezer holding at -18.6 °C', 'cold', 'ambacang', { kind: 'site', id: 'ambacang' });
+      push(s + 180, 'Teluk Bayur D04 cleared 22 pallets in 9 min', 'good', 'teluk-bayur', { kind: 'dock', id: 'teluk-bayur:D04' });
+      push(s + 320, `${shipments[1].id} at risk, picking behind plan`, 'warn', 'ambacang');
+      push(s + 470, 'Pasa Ateh FL-03 finished charging', 'good', 'pasa-ateh', { kind: 'forklift', id: 'pasa-ateh:FL-03' });
     }
 
     // ---- KPIs -------------------------------------------------------------------------------------
@@ -410,6 +410,7 @@ export function createMock(): MockSource {
       return {
         id: s.id,
         name: s.name,
+        short: s.short,
         code: s.code,
         kind: s.kind,
         blurb: s.blurb,

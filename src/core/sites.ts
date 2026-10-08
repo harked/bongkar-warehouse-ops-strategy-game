@@ -5,7 +5,9 @@ export type SiteKind = 'dc' | 'cold' | 'crossdock' | 'hub';
 export interface SiteDef {
   id: string;
   name: string;
-  /** Short code used in labels, e.g. truck plates "NG-204". */
+  /** Compact name for tight spots (site buttons, route ends). */
+  short: string;
+  /** Short code used in labels, e.g. truck plates "PA-204". */
   code: string;
   kind: SiteKind;
   blurb: string;
@@ -29,9 +31,10 @@ export interface SiteDef {
 
 export const SITE_DEFS: SiteDef[] = [
   {
-    id: 'northgate',
-    name: 'Northgate DC',
-    code: 'NG',
+    id: 'pasa-ateh',
+    name: 'Pasa Ateh',
+    short: 'Pasa Ateh',
+    code: 'PA',
     kind: 'dc',
     blurb: 'Ambient distribution center',
     center: { x: 0, z: 0 },
@@ -47,9 +50,10 @@ export const SITE_DEFS: SiteDef[] = [
     truckLoad: 9,
   },
   {
-    id: 'frostline',
-    name: 'Frostline Cold Chain',
-    code: 'FL',
+    id: 'ambacang',
+    name: 'Ambacang',
+    short: 'Ambacang',
+    code: 'AM',
     kind: 'cold',
     blurb: 'Chilled and frozen storage',
     center: { x: -250, z: 30 },
@@ -65,9 +69,10 @@ export const SITE_DEFS: SiteDef[] = [
     truckLoad: 6,
   },
   {
-    id: 'riverside',
-    name: 'Riverside Cross-Dock',
-    code: 'RV',
+    id: 'teluk-bayur',
+    name: 'Teluk Bayur',
+    short: 'Teluk Bayur',
+    code: 'TB',
     kind: 'crossdock',
     blurb: 'Flow-through, no storage',
     center: { x: 250, z: 10 },
@@ -83,9 +88,10 @@ export const SITE_DEFS: SiteDef[] = [
     truckLoad: 10,
   },
   {
-    id: 'pinecrest',
-    name: 'Pinecrest Hub',
-    code: 'PC',
+    id: 'stasiun-tabing',
+    name: 'Stasiun Tabing',
+    short: 'Tabing',
+    code: 'ST',
     kind: 'hub',
     blurb: 'Regional parcel hub',
     center: { x: 10, z: -230 },

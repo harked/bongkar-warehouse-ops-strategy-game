@@ -1,4 +1,5 @@
 /** Site crest: banner with the active site's medallion and a tray of site tokens. */
+import { SITE_DEFS } from '../../core/sites';
 import type { Ctx } from '../ctx';
 import { el, setAttr, setText, toggle } from '../dom';
 import { icon, setIcon } from '../icons';
@@ -9,12 +10,6 @@ interface Token {
   label: HTMLElement;
 }
 
-const FALLBACK = [
-  { id: 'northgate', name: 'Northgate DC', kind: 'dc' },
-  { id: 'frostline', name: 'Frostline Cold Chain', kind: 'cold' },
-  { id: 'riverside', name: 'Riverside Cross-Dock', kind: 'crossdock' },
-  { id: 'pinecrest', name: 'Pinecrest Hub', kind: 'hub' },
-];
 
 export class Crest {
   readonly el: HTMLElement;
@@ -37,7 +32,7 @@ export class Crest {
     this.alerts = el('span', 'ym-crest-alerts', sub);
     this.tray = el('nav', 'ym-crest-tray', this.el);
     this.addToken('network', 'Network', 'network');
-    for (const s of FALLBACK) this.addToken(s.id, s.name.split(' ')[0], s.kind);
+    for (const s of SITE_DEFS) this.addToken(s.id, s.short, s.kind);
   }
 
   private addToken(id: string, label: string, kind: string): void {

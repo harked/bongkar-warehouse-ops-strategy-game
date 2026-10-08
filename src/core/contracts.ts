@@ -66,7 +66,7 @@ export interface TruckOptions {
   trailerColor?: number;
   /** Carrier name painted on the trailer side, e.g. "Bluebird Freight". */
   carrier?: string;
-  /** Plate / unit label, e.g. "NG-204". */
+  /** Plate / unit label, e.g. "PA-204". */
   label?: string;
 }
 

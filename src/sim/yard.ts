@@ -85,7 +85,7 @@ export interface SiteYard {
   connX: number;
   gateZone: Zone;
   connZone: Zone | null;
-  /** Riverside: connector hold point for north docks. */
+  /** Teluk Bayur: connector hold point for north docks. */
   connHold: V2 | null;
   doors: Map<string, DoorGeo>;
   bays: QueueBay[];

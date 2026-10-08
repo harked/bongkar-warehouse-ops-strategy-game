@@ -26,8 +26,6 @@ const TRUCK_ORDER: Record<TruckState, number> = { 'at-dock': 0, docking: 1, depa
 const VARIANT: Record<string, string> = { dry: 'Dry van', reefer: 'Reefer', box: 'Box trailer' };
 const DAYS = ['Thu', 'Fri', 'Sat', 'Sun', 'Mon', 'Tue', 'Wed'];
 
-const short = (name: string) => name.split(' ')[0];
-
 export function truckState(t: Truck): TruckState {
   const s = t.hudState();
   if ((t.phase === 'toDoor' || t.phase === 'toBay' || t.phase === 'toConn') && t.yardS > 0 && t.s < t.yardS) return 'en-route';
@@ -35,7 +33,7 @@ export function truckState(t: Truck): TruckState {
 }
 
 export function truckWhere(sim: Sim, t: Truck): { where: string; eta?: number } {
-  const site = t.site ? short(t.site.L.def.name) : null;
+  const site = t.site ? t.site.L.def.name : null;
   const st = truckState(t);
   switch (st) {
     case 'en-route': {
@@ -140,6 +138,7 @@ export function buildSnapshot(sim: Sim, activeSiteId: string, selection: EntityR
     sites.push({
       id: ops.id,
       name: ops.L.def.name,
+      short: ops.L.def.short,
       code: ops.L.def.code,
       kind: ops.L.def.kind,
       blurb: ops.L.def.blurb,
@@ -195,7 +194,7 @@ function describe(sim: Sim, ref: EntityRef, sites: SiteSummary[]): SelectionDeta
     ];
     if (sh) {
       fields.push({ label: 'Shipment', value: `${sh.id} · ${CARGO_LABEL[sh.cargo]}` });
-      fields.push({ label: 'Route', value: `${short(sh.from.name)} to ${sh.to.siteId ? short(sh.to.name) : sh.to.name}` });
+      fields.push({ label: 'Route', value: `${sh.from.name} to ${sh.to.name}` });
       fields.push({
         label: 'ETA vs due',
         value: `${clock(sh.etaAt)} / ${clock(sh.dueAt)}`,
@@ -281,7 +280,7 @@ function describe(sim: Sim, ref: EntityRef, sites: SiteSummary[]): SelectionDeta
       { label: 'Origin', value: p.origin },
     ];
     if (p.receivedAt > 0) fields.push({ label: 'Received', value: clock(p.receivedAt) });
-    if (p.shipment) fields.push({ label: 'Shipment', value: `${p.shipment.id} to ${p.shipment.to.siteId ? short(p.shipment.to.name) : p.shipment.to.name}` });
+    if (p.shipment) fields.push({ label: 'Shipment', value: `${p.shipment.id} to ${p.shipment.to.name}` });
     return {
       ref,
       title: `Pallet ${p.id}`,

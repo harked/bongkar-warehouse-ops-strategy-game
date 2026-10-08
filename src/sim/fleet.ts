@@ -229,7 +229,7 @@ export class Fleet {
         t.phase = 'bay';
         t.waitSince = this.sim.t;
         this.traffic.releaseAll(t);
-        this.sim.event(`${t.label} waiting in the yard at ${ops.L.def.name.split(' ')[0]} for a door`, 'neutral', ops.id, { kind: 'truck', id: t.id });
+        this.sim.event(`${t.label} waiting in the yard at ${ops.L.def.name} for a door`, 'neutral', ops.id, { kind: 'truck', id: t.id });
       };
       return true;
     }
@@ -283,7 +283,7 @@ export class Fleet {
       t.decided = true;
       if (t.job.shipment && t.job.shipment.stage === 2) this.sim.shipments.arrived(t.job.shipment);
     }
-    this.sim.event(`${t.label} holding at the ${ops.L.def.name.split(' ')[0]} gate, yard is full`, 'warn', ops.id, { kind: 'truck', id: t.id });
+    this.sim.event(`${t.label} holding at the ${ops.L.def.name} gate, yard is full`, 'warn', ops.id, { kind: 'truck', id: t.id });
   }
 
   // ---- dispatcher -----------------------------------------------------------------------------------
@@ -402,7 +402,7 @@ export class Fleet {
       this.drive(t, dep.route, false, [{ zone: d.geo.pullZone, sEnter: 0, sRelease: d.geo.pullRelease }]);
       t.onArrive = () => this.arriveEnd(t);
     }
-    const where = job.dest === 'west' || job.dest === 'east' ? 'the highway' : this.sim.layout.siteById[job.dest].def.name.split(' ')[0];
+    const where = job.dest === 'west' || job.dest === 'east' ? 'the highway' : this.sim.layout.siteById[job.dest].def.name;
     this.sim.event(`${t.label} pulled out of ${d.L.label}, heading to ${where}`, 'good', ops.id, { kind: 'truck', id: t.id });
   }
 

@@ -1,6 +1,6 @@
 /**
  * The diorama island: outline, height field (flat where sites and roads are, gentle low-poly
- * hills elsewhere), river near Riverside, chunky cliff with strata, Lagoon sea, trees, clouds.
+ * hills elsewhere), river near Teluk Bayur, chunky cliff with strata, Lagoon sea, trees, clouds.
  */
 import * as THREE from 'three';
 import { rng, smoothstep } from '../core/geom';
@@ -47,7 +47,7 @@ export function islandEdgeX(z: number, side: 1 | -1): number {
   return lo;
 }
 
-/** River centreline near Riverside, north pond to south waterfall. */
+/** River centreline near Teluk Bayur, north pond to south waterfall. */
 export const RIVER: V2[] = [
   { x: 400, z: -262 },
   { x: 394, z: -238 },

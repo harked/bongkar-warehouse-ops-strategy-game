@@ -1,6 +1,6 @@
 /**
  * Dev-only showroom (`?showroom`): a lineup of every truck variant, forklifts at several fork
- * heights carrying pallets, and a grid of every cargo kind, parked on the Northgate yard apron.
+ * heights carrying pallets, and a grid of every cargo kind, parked on the Pasa Ateh yard apron.
  *
  * Capture helpers on window:
  *   __showroomView(x, z, yaw, pitch, dist)  camera override aimed at world (x, 0, z); null clears
@@ -73,7 +73,7 @@ export function mountShowroom(scene: THREE.Scene, vehicles: VehicleFactory): voi
     { variant: 'box', cab: P.midnight, carrier: 'Cobalt Cargo', trailer: P.glacier },
   ];
   variants.forEach((d, i) => {
-    const v = vehicles.createTruck({ variant: d.variant, cabColor: d.cab, carrier: d.carrier, trailerColor: d.trailer, label: `NG-${201 + i}` });
+    const v = vehicles.createTruck({ variant: d.variant, cabColor: d.cab, carrier: d.carrier, trailerColor: d.trailer, label: `PA-${201 + i}` });
     v.object.position.set(-18 + i * 5.2, 0, 62);
     v.object.userData.pick = { kind: 'truck', id: `show-${i}` };
     root.add(v.object);

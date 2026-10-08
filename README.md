@@ -33,10 +33,10 @@ Then open http://localhost:5173.
 
 ## Sites
 
-- **Northgate DC** - ambient distribution center
-- **Frostline Cold Chain** - chilled and frozen storage
-- **Riverside Cross-Dock** - flow-through, doors on both sides
-- **Pinecrest Hub** - regional parcel hub
+- **Pasa Ateh** - ambient distribution center
+- **Ambacang** - chilled and frozen storage
+- **Teluk Bayur** - flow-through, doors on both sides
+- **Stasiun Tabing** - regional parcel hub
 
 ## Project layout
 

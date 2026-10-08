@@ -104,7 +104,7 @@ export function createSiteAtlas(site: SiteLayout): SiteAtlas {
     g.font = `800 120px ${DISPLAY}`;
     g.textAlign = 'center';
     g.textBaseline = 'middle';
-    fitText(g, site.def.name.replace(/ (DC|Hub|Cold Chain|Cross-Dock)$/, ''), 1536, 136, 940, 'center');
+    fitText(g, site.def.name, 1536, 136, 940, 'center');
     g.restore();
 
     // ---- door plates and yard numbers -------------------------------------------------------------

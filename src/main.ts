@@ -42,7 +42,7 @@ function sitePose(id: string): CameraPose {
 }
 const FOCUS_DIST: Record<EntityRef['kind'], number> = { site: 0, truck: 55, forklift: 30, pallet: 24, dock: 40 };
 
-const rig = new CameraRig(canvas, { x0: -480, z0: -320, x1: 480, z1: 240 }, sitePose('northgate'));
+const rig = new CameraRig(canvas, { x0: -480, z0: -320, x1: 480, z1: 240 }, sitePose('pasa-ateh'));
 scene.add(rig.camera);
 
 // ---- selection -------------------------------------------------------------------------------
@@ -51,7 +51,7 @@ scene.add(selection.group);
 const portrait = new PortraitRenderer(renderer, scene, sim);
 
 let selected: EntityRef | null = null;
-let activeSiteId = 'northgate';
+let activeSiteId = 'pasa-ateh';
 let snapDirty = true;
 
 const tmp = new THREE.Vector3();

@@ -14,10 +14,10 @@ import type { Pallet } from './pallets';
 import type { Truck, TruckJob } from './truck';
 
 const CARGO_BY_SITE: Record<string, CargoKind[]> = {
-  northgate: ['cartons', 'cartons', 'wrapped', 'drums'],
-  frostline: ['frozen', 'produce'],
-  pinecrest: ['parcels', 'parcels', 'cartons'],
-  riverside: ['cartons', 'wrapped', 'parcels', 'drums'],
+  'pasa-ateh': ['cartons', 'cartons', 'wrapped', 'drums'],
+  ambacang: ['frozen', 'produce'],
+  'stasiun-tabing': ['parcels', 'parcels', 'cartons'],
+  'teluk-bayur': ['cartons', 'wrapped', 'parcels', 'drums'],
 };
 
 const EXT_EDGE = (name: string): 'west' | 'east' => (name.length % 2 ? 'west' : 'east');
@@ -137,14 +137,14 @@ export class ShipmentBook {
     sh.door = door;
     door.shipment = sh;
     this.needTruck.set(sh, this.sim.t + (opts.truckIn ?? 90 + r() * 200));
-    this.sim.event(`Picking started for ${sh.id} at ${ops.L.def.name.split(' ')[0]}, ${sh.count} pallets`, 'neutral', siteId);
+    this.sim.event(`Picking started for ${sh.id} at ${ops.L.def.name}, ${sh.count} pallets`, 'neutral', siteId);
     return sh;
   }
 
-  /** Cross-dock: pallets that just landed on the Riverside floor go straight back out. */
+  /** Cross-dock: pallets that just landed on the Teluk Bayur floor go straight back out. */
   crossDock(ops: SiteOps, pallets: Pallet[], cargo: CargoKind, truckIn?: number): Shipment {
     const r = this.sim.rand;
-    const toSite = r() < 0.35 ? pick(['northgate', 'pinecrest'], r) : null;
+    const toSite = r() < 0.35 ? pick(['pasa-ateh', 'stasiun-tabing'], r) : null;
     const to = toSite ? this.ep(toSite) : this.ext(pick(CUSTOMERS, r));
     const plan = pallets.length * 95 + 900;
     const sh = this.make(this.ep(ops.id), to, cargo, plan, 1);
@@ -173,7 +173,7 @@ export class ShipmentBook {
     this.doneToday++;
     for (const p of sh.pallets) if (p.shipment === sh) p.shipment = null;
     const late = this.sim.t > sh.dueAt;
-    const where = sh.to.siteId ? `put away at ${sh.to.name.split(' ')[0]}` : `delivered to ${sh.to.name}`;
+    const where = sh.to.siteId ? `put away at ${sh.to.name}` : `delivered to ${sh.to.name}`;
     this.sim.event(`${sh.id} ${where}${late ? ', late' : ''}`, late ? 'warn' : 'good', sh.to.siteId ?? sh.from.siteId ?? undefined);
     if (sh.door && sh.door.shipment === sh) sh.door.shipment = null;
   }
@@ -203,7 +203,7 @@ export class ShipmentBook {
     if (sh.door && sh.door.shipment === sh) sh.door.shipment = null;
     sh.door = null;
     sh.truck = t;
-    this.sim.event(`${sh.id} left ${sh.from.name.split(' ')[0]} for ${sh.to.siteId ? sh.to.name.split(' ')[0] : sh.to.name}`, 'active', sh.from.siteId ?? undefined, { kind: 'truck', id: t.id });
+    this.sim.event(`${sh.id} left ${sh.from.name} for ${sh.to.siteId ? sh.to.name : sh.to.name}`, 'active', sh.from.siteId ?? undefined, { kind: 'truck', id: t.id });
   }
 
   arrived(sh: Shipment): void {
@@ -294,11 +294,11 @@ export class ShipmentBook {
       if (fill < 0.48) outT--;
       if (inOpen < inT && r() < 0.55) {
         // some inbound comes as a transfer from another site
-        const others = ['northgate', 'pinecrest', 'frostline'].filter((s) => s !== id && CARGO_BY_SITE[s].some((c) => CARGO_BY_SITE[id].includes(c)));
+        const others = ['pasa-ateh', 'stasiun-tabing', 'ambacang'].filter((s) => s !== id && CARGO_BY_SITE[s].some((c) => CARGO_BY_SITE[id].includes(c)));
         if (others.length && r() < 0.25) this.createOutbound(pick(others, r), id);
         else this.createInbound(id);
       }
-      if (outOpen < outT && r() < 0.55) this.createOutbound(id, r() < 0.2 ? 'riverside' : null);
+      if (outOpen < outT && r() < 0.55) this.createOutbound(id, r() < 0.2 ? 'teluk-bayur' : null);
     }
   }
 

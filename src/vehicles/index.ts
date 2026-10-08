@@ -16,7 +16,7 @@ export const vehicles: VehicleFactory = {
   createPalletRenderer,
 };
 
-// Dev showroom: `?showroom` in the URL mounts a lineup of every vehicle next to Northgate.
+// Dev showroom: `?showroom` in the URL mounts a lineup of every vehicle next to Pasa Ateh.
 if (typeof window !== 'undefined' && new URLSearchParams(window.location.search).has('showroom')) {
   void import('./showroom').then((m) => m.mountShowroomWhenReady(vehicles));
 }

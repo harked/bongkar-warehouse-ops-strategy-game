@@ -83,10 +83,10 @@ export class Sim implements SimCore, Simulation {
   private seed(): void {
     const r = this.rand;
     const cargoFor: Record<string, (s: SlotLayout) => CargoKind> = {
-      northgate: () => pick(['cartons', 'cartons', 'wrapped', 'drums'] as CargoKind[], r),
-      frostline: (s) => (s.zone === 'frozen' ? 'frozen' : 'produce'),
-      pinecrest: () => pick(['parcels', 'parcels', 'cartons'] as CargoKind[], r),
-      riverside: () => pick(['cartons', 'wrapped', 'parcels'] as CargoKind[], r),
+      'pasa-ateh': () => pick(['cartons', 'cartons', 'wrapped', 'drums'] as CargoKind[], r),
+      ambacang: (s) => (s.zone === 'frozen' ? 'frozen' : 'produce'),
+      'stasiun-tabing': () => pick(['parcels', 'parcels', 'cartons'] as CargoKind[], r),
+      'teluk-bayur': () => pick(['cartons', 'wrapped', 'parcels'] as CargoKind[], r),
     };
     for (const ops of this.sites.values()) {
       if (ops.floor) continue;
@@ -100,9 +100,9 @@ export class Sim implements SimCore, Simulation {
     for (const ops of this.sites.values()) {
       const inbound = ops.doors.filter((d) => d.L.role === 'inbound');
       const outbound = ops.doors.filter((d) => d.L.role === 'outbound');
-      const nIn = ops.id === 'northgate' ? inbound.length : Math.max(1, Math.round(inbound.length * 0.5));
+      const nIn = ops.id === 'pasa-ateh' ? inbound.length : Math.max(1, Math.round(inbound.length * 0.5));
       for (const d of pickN(inbound, nIn, r)) this.seedDockedInbound(ops, d);
-      if (ops.id === 'northgate' && ops.yard.bays.length) {
+      if (ops.id === 'pasa-ateh' && ops.yard.bays.length) {
         // one more inbound load waiting in the yard for a door
         const sh = this.shipments.createInbound(ops.id, { seedOnRoute: 0 });
         if (sh?.truck) {
@@ -116,7 +116,7 @@ export class Sim implements SimCore, Simulation {
         const nOut = Math.max(1, Math.round(outbound.length * 0.6));
         let k = 0;
         for (let i = 0; i < nOut; i++) {
-          const sh = this.shipments.createOutbound(ops.id, r() < 0.2 ? 'riverside' : null, { truckIn: 1e9 });
+          const sh = this.shipments.createOutbound(ops.id, r() < 0.2 ? 'teluk-bayur' : null, { truckIn: 1e9 });
           if (!sh) break;
           // a couple already have their truck at the door
           if (k++ % 2 === 0 && sh.door) this.seedDockedCollect(ops, sh.door);
@@ -124,7 +124,7 @@ export class Sim implements SimCore, Simulation {
         }
       }
     }
-    // Riverside: cross-dock loads on the floor, one already loading at a north door
+    // Teluk Bayur: cross-dock loads on the floor, one already loading at a north door
     const rv = [...this.sites.values()].find((o) => o.floor);
     if (rv) {
       for (let k = 0; k < 2; k++) {
@@ -165,7 +165,7 @@ export class Sim implements SimCore, Simulation {
     }
     this.shipments.doneToday = 11 + Math.floor(r() * 5);
     // an hour and a half of shift already behind us: throughput history and counters
-    const rate: Record<string, number> = { northgate: 260, frostline: 180, riverside: 150, pinecrest: 170 };
+    const rate: Record<string, number> = { 'pasa-ateh': 260, ambacang: 180, 'teluk-bayur': 150, 'stasiun-tabing': 170 };
     let before = 0;
     for (const ops of this.sites.values()) {
       const per = rate[ops.id] ?? 150;
@@ -188,7 +188,7 @@ export class Sim implements SimCore, Simulation {
 
   private seedDockedInbound(ops: SiteOps, d: DoorState): void {
     const r = this.rand;
-    const cargo = ops.id === 'frostline' ? (r() < 0.5 ? 'frozen' : 'produce') : ops.id === 'pinecrest' ? 'parcels' : pick(['cartons', 'wrapped', 'drums'] as CargoKind[], r);
+    const cargo = ops.id === 'ambacang' ? (r() < 0.5 ? 'frozen' : 'produce') : ops.id === 'stasiun-tabing' ? 'parcels' : pick(['cartons', 'wrapped', 'drums'] as CargoKind[], r);
     const sh = this.shipments.createInbound(ops.id, { cargo, seedOnRoute: 0 });
     if (!sh || !sh.truck) return;
     const t = sh.truck;
@@ -398,7 +398,7 @@ export class Sim implements SimCore, Simulation {
       case 'forklift': {
         const ops = this.sites.get(ref.id.split(':')[0]);
         const f = ops?.forklifts.find((x) => x.id === ref.id);
-        return f && ops ? `${f.label} · ${ops.L.def.name.split(' ')[0]}` : ref.id;
+        return f && ops ? `${f.label} · ${ops.L.def.name}` : ref.id;
       }
       case 'pallet': {
         const p = this.pallets.byId.get(ref.id);
@@ -407,7 +407,7 @@ export class Sim implements SimCore, Simulation {
       case 'dock': {
         const ops = this.sites.get(ref.id.split(':')[0]);
         const d = ops?.doorById.get(ref.id);
-        return d && ops ? `${ops.L.def.name.split(' ')[0]} ${d.L.label} · ${d.L.role}` : ref.id;
+        return d && ops ? `${ops.L.def.name} ${d.L.label} · ${d.L.role}` : ref.id;
       }
       case 'site':
         return this.layout.siteById[ref.id]?.def.name ?? ref.id;

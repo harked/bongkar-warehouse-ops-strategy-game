@@ -314,7 +314,7 @@ function buildWorld(): WorldLayout {
   const roads: RoadSeg[] = [];
   for (const s of sites) {
     hwNode(`G:${s.id}`, s.gate);
-    if (s.id === 'pinecrest') {
+    if (s.id === 'stasiun-tabing') {
       hwNode('P1', { x: PINE_CONNECTOR_X, z: s.gate.z });
       hwNode(`J:${s.id}`, { x: PINE_CONNECTOR_X, z: TRUNK_Z });
       hwEdge(`G:${s.id}`, 'P1');

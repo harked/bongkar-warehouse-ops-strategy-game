@@ -201,8 +201,8 @@ export class Rail {
     setIcon(this.fromMedal, from?.kind ?? 'dc', 15, 1.9);
     setAttr(this.toMedal, 'data-kind', to?.kind ?? 'dc');
     setIcon(this.toMedal, to?.kind ?? 'dc', 15, 1.9);
-    setText(this.fromName, from ? from.name.split(' ')[0] : cur.fromSiteId);
-    setText(this.toName, to ? to.name.split(' ')[0] : cur.toSiteId);
+    setText(this.fromName, from ? from.short : cur.fromSiteId);
+    setText(this.toName, to ? to.short : cur.toSiteId);
     setAttr(this.fromMedal, 'title', from?.name ?? cur.fromSiteId);
     setAttr(this.toMedal, 'title', to?.name ?? cur.toSiteId);
 

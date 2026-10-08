@@ -289,7 +289,8 @@
 }
 .ym-crest-tray {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(5, auto);
+  justify-content: space-between;
   gap: 2px;
   margin-top: 10px;
   padding: 5px;
@@ -305,7 +306,7 @@
   flex-direction: column;
   align-items: center;
   gap: 5px;
-  padding: 7px 2px 5px;
+  padding: 7px 5px 5px;
   border-radius: 11px;
   transition: background-color var(--t) var(--ease), box-shadow var(--t) var(--ease);
 }
@@ -319,6 +320,7 @@
   transform: translateY(-1px);
 }
 .ym-token-label {
+  white-space: nowrap;
   font-size: 11px;
   font-weight: 650;
   color: var(--slate);
@@ -1616,17 +1618,26 @@
 }
 .ym-rail-end {
   flex: none;
-  width: 58px;
+  width: 66px;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 4px;
 }
+/* Outside partners ("Harborview Outlet") get two centred lines, then an ellipsis. */
 .ym-rail-end-name {
+  max-width: 100%;
   font-size: 11px;
   font-weight: 700;
+  line-height: 1.15;
+  text-align: center;
   color: var(--ink);
-  white-space: nowrap;
+  overflow-wrap: anywhere;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
 }
 .ym-rail-track {
   position: relative;

@@ -52,7 +52,7 @@ No cream anywhere: the light neutrals all lean cool (Haze, Glacier, Concrete).
 ```
 +--------------------------------------------------------------------------------+
 |  .-Site crest------------------.    .-Pulse strip------------------.   .-Sun dial-.|
-|  | (DC) Northgate DC         v |    | 412/h  8/10 docks  97%  -18C |   |  07:42   ||
+|  | (DC) Pasa Ateh         v |    | 412/h  8/10 docks  97%  -18C |   |  07:42   ||
 |  |  o   o   o   o  network     |    '------------------------------'   | > 1x 4x  ||
 |  '-----------------------------'                                       '----------'|
 |                                                                                |

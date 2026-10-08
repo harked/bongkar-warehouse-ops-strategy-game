@@ -27,7 +27,7 @@ export type DoorSide = 'S' | 'N';
 export type DoorRole = 'inbound' | 'outbound';
 
 export interface DoorLayout {
-  id: string; // e.g. "northgate:D03"
+  id: string; // e.g. "pasa-ateh:D03"
   siteId: string;
   label: string; // "D03"
   index: number;
@@ -48,7 +48,7 @@ export interface DoorLayout {
 }
 
 export interface SlotLayout {
-  id: string; // "northgate:A03:L:12:1" or "northgate:D03:stage:2"
+  id: string; // "pasa-ateh:A03:L:12:1" or "pasa-ateh:D03:stage:2"
   index: number; // index into SiteLayout.slots (stage slots have their own numbering per door)
   kind: 'rack' | 'floor' | 'stage';
   /** Pallet bottom centre. */
@@ -192,6 +192,7 @@ export interface SiteKpis {
 export interface SiteSummary {
   id: string;
   name: string;
+  short: string;
   code: string;
   kind: SiteDef['kind'];
   blurb: string;
@@ -234,7 +235,7 @@ export interface TruckRow {
   /** Site it is heading to / at. Undefined when leaving the map. */
   siteId?: string;
   doorLabel?: string;
-  /** Human text: "Docked at D03", "4 min to Frostline". */
+  /** Human text: "Docked at D03", "4 min to Ambacang". */
   where: string;
   /** Simulated seconds until arrival when en-route. */
   etaSec?: number;
