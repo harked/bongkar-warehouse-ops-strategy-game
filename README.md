@@ -1,7 +1,7 @@
 # bongkar-warehouse-ops-strategy-game
 a browser app: warehouse operations console that feels like a city-builder / RTS strategy game
 
-Codename **Yardmaster**. A living toy-diorama of a four-site warehouse network: trucks drive the
+**Bongkar** (Indonesian for "unload"). A living toy-diorama of a four-site warehouse network: trucks drive the
 highways, reverse into docks and unload; forklifts thread the aisles moving pallets between
 trailers and racks; shipments flow between sites. Built with Vite, TypeScript and three.js, with
 every 3D asset made in code.

@@ -1,5 +1,5 @@
 /**
- * Yardmaster HUD: a strategy-game overlay of glass panels around the 3D world.
+ * Bongkar HUD: a strategy-game overlay of glass panels around the 3D world.
  *
  *   top-left      site crest (banner + medallion tokens)
  *   top-centre    pulse strip (segmented KPIs)

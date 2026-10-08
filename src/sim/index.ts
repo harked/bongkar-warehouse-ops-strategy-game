@@ -1,5 +1,5 @@
 /**
- * Yardmaster simulation: clock, trucks, forklifts, pallets and shipments, with view sync and the
+ * Bongkar simulation: clock, trucks, forklifts, pallets and shipments, with view sync and the
  * HUD snapshot. Starts Thursday 8 Oct at 07:30 with the world already mid-shift.
  */
 import * as THREE from 'three';
